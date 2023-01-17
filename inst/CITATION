@@ -1,0 +1,7 @@
+citEntry(entry = "manual",
+  author = "Thomas P. Keeble",
+  title = "ARRtools: An R package for the spatial analysis of watersheds",
+  year = "2023",
+  url = "https://github.com/Tom-Keeble/ARRtools",
+  textVersion = paste0("Keeble, T. P. 2023. ARRtools: An R package for the spatial analysis of watersheds. Version ", packageVersion("ARRtools"), ". https://github.com/Tom-Keeble/ARRtools")
+)

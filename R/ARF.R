@@ -75,7 +75,7 @@ ARF <- function(area, duration, aep, region = NULL, params = NULL, neg_to_zero =
   }
 
   if(duration <= 720 & area > 1000) {
-    warning(str_c("Generalized equations are not applicable for short durations when catchment areas exceed 1000 km-squared.",
+    warning(stringr::str_c("Generalized equations are not applicable for short durations when catchment areas exceed 1000 km-squared.",
                   "If area > 1000, duration must be greater than 12 hours (720 mins)"))
     return(NA)
   }

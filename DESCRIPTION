@@ -1,15 +1,9 @@
 Package: ARRtools
-Type: Package
-Title: Tools for implementing ARR functions
-Version: 0.1.0
-Date: 16-01-2023
-Author: Tom Keeble <tom.keeble@unimelb.edu.au>
-Maintainer: Tom Keeble <tom.keeble@unimelb.edu.au>
-Description: Tools for use in implementation of Australian Rainfall and
-    Runoff (ARR) methods and equations.
-    Currently supports:
-    - Areal Reduction Factor (ARF) calculation with associated interpolation for duration and area.
+Title: ARRtools
+Version: 0.0.0.1
+Authors@R: person("Thomas", "Keeble", , "tomkeeble0@gmail.com", role = c("aut", "cre"))
+Description: An R package containing tools for implementing Australian Rainfall and Runoff (ARR) methods.
+Depends: R (>= 4.0)
 Imports: stringr
-License: What license is it under?
-Encoding: UTF-8
+License: MIT
 LazyData: true

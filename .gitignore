@@ -3,3 +3,4 @@
 *.Rbuildignore
 *.RData
 *.Rproj
+.DS_Store

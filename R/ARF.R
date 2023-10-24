@@ -3,17 +3,16 @@ ARF_long <- function(area, duration, aep, region, params) {
   # Duration in minutes
   # aep as a fracion e.g. 0.01
   # region must be one of the 10 valid regions
-  # params is a data frame of parameters a,...,i for all regions
+  # params is a data frame of parameters a,...,i for all regions, which is
+  # currently lazily defined in ARF()
 
   # Check the region is valid
-
   all.regions <- names(params)
   all.regions.txt <- stringr::str_c(all.regions, collapse = ', ')
 
   if(!(region %in% all.regions)) stop (stringr::str_c('Invalid region. You input "', region, '". Valid regions are ', all.regions.txt))
 
   # For the select region, assignment the parameters to a,...,i
-
   for(i in 1:9) {
     assign(letters[i], params[ ,region][i])
   }
@@ -21,8 +20,6 @@ ARF_long <- function(area, duration, aep, region, params) {
   min(1, (1 - a*(area^b - c*log10(duration)) * duration ^-d +
             e*area^f*duration^g * (0.3 + log10(aep)) +
             h*10^(i*area*duration/1440) * (0.3 + log10(aep))))
-
-
 }
 
 
@@ -44,30 +41,18 @@ ARF_short <- function(area, duration, aep) {
             h * area^j * 10^(i* (1/1440) * (duration - 180)^2)  * (0.3 + log10(aep))))
 }
 
-ARF <- function(area, duration, aep, region = NULL, params = NULL, neg_to_zero = TRUE) {
+ARF <- function(area, duration, aep, region = NULL, neg_to_zero = TRUE) {
 
+  # Only need a region if duration is greater than 12 hours so
+  # this argument is optional
+  # neg_to_zero: sets negative ARFs to zero; the default is TRUE
 
-
-  # We only need a region and parameters if duration is greater than 12 hours so
-  # these arguments are optional
-
-  #neg_to_zero, set negative ARFs to zero, the default is TRUE
-
-  # Define the functions we may need
-
-  # Checking inputs
-
+  # Check inputs, then use appropriate function
 
   if(area < 0 | area > 30000){
     warning('Area must be between zero and 30,000 km-squared')
     return(NA)
   }
-
-  # if(aep > 0.5 | aep < 0.005) {
-  #   warning('AEP must be between 0.5% and 50%, returning NA')
-  #   return(NA)
-  # }
-  # This is not used because AEPS < 0.05 will not be input, and an AEP of 0.632 is necessary to use.
 
   if(duration > 7*24*60 | duration < 0){
     warning('Duration must be positive and less than 10080 min (7 days)')
@@ -80,6 +65,7 @@ ARF <- function(area, duration, aep, region = NULL, params = NULL, neg_to_zero =
     return(NA)
   }
 
+  # Lazily define params in the instance that they are needed
   if(duration > 720){
     params <-
       structure(list(`East Coast North` =     c(0.327,  0.241, 0.448, 0.36,  0.00096,   0.48,  -0.21,   0.012,   -0.0013),
@@ -93,30 +79,26 @@ ARF <- function(area, duration, aep, region = NULL, params = NULL, neg_to_zero =
                      `Northern Coastal` =     c(0.326,  0.223, 0.442, 0.323, 0.0013,    0.58,  -0.374,  0.013,   -0.0015),
                      `Inland Arid` =          c(0.297,  0.234, 0.449, 0.344, 0.00142,    0.216, 0.129,  0,        0)),
                 class = "data.frame", row.names = c("a", "b", "c", "d", "e", "f", "g", "h", "i"))
-
   }
 
-  #
-
+  # ARF = 1 for catchments less than 1km^2
   if(area <= 1) return(1)
 
   if(duration >= 1440){
     if(area >= 10){
       return(ARF_long(area, duration, aep, region, params))
-
     }
 
-    # area < 10
-    # interpolate based on area between the long duration ARF for 10 km-square
+    # If catchment area < 10km^2:
+    # Interpolate (as a function of area) between the long duration ARF for 10 km-square
     # and an ARF of 1
 
     ARF.long.10 <- ARF_long(10, duration, aep, region, params)
     ARF = 1 - 0.6614*(1-ARF.long.10)*(area^0.4 - 1)
 
-
     return(ARF)
-
   }
+
   if(duration <= 720){
     if(area >= 10){
       if(area > 1000) {
@@ -124,12 +106,12 @@ ARF <- function(area, duration, aep, region = NULL, params = NULL, neg_to_zero =
         return(NA)
       }
       ARF <- ARF_short(area, duration, aep)
-      if(neg_to_zero) ARF <- max(0, ARF) # Sometimes, short duration events on large catchments produce values less than zero, so they are set to zero.
-      return(ARF)
+      if(neg_to_zero) ARF <- max(0, ARF) # Sometimes, short duration events on large
+      return(ARF) # catchments produce values less than zero, so they are set to zero.
     }
 
-    # area < 10 and duration less than 12 hours
-    # interpolate based on area between the short duration ARF for 10 km-square
+    # If catchment area < 10km^2 and duration less than 12 hours
+    # interpolate (as a function of area) between the short duration ARF for 10 km-square
     # and an ARF of 1
 
     ARF.short.10 <- ARF_short(10, duration, aep)
@@ -139,25 +121,21 @@ ARF <- function(area, duration, aep, region = NULL, params = NULL, neg_to_zero =
   }
 
 
-  # duration between 720 and 1440 i.e. between 12 hours and 24 hours
-
+  # If catchment area between 1 and 10km^2, and duration between 720 and 1440
+  # i.e. between 12 hours and 24 hours
   if(area > 1 & area < 10){
-    # 1. Calculate long duration ARF for 10 km-squared and 24 hours duration
 
+    # 1. Calculate long duration ARF for 10 km^2 catchment and 24 hours duration
     ARF.long.24 <- ARF_long(10, 1440, aep, region, params)
 
-    # 2. Calculate short duration ARF for 10 km-squared and 12 hours (720 min)
-
+    # 2. Calculate short duration ARF for 10 km^2 catchment and 12 hours (720 min) duration
     ARF.short.12 <- ARF_short(10, 720, aep)
 
-    # 3. Interpolate   ARF for 10 km-squared and selected duration
-
+    # 3. Interpolate ARF for 10 km^2 area and selected duration
     ARF.interp.10 <- ARF.short.12 + (ARF.long.24 - ARF.short.12)*(duration - 720)/720
 
-    #4. Interpolate ARF for catchment area and selected duration
-
+    #4. Interpolate ARF as a function of catchment area
     ARF <- 1 - 0.6614*(1-ARF.interp.10)*(area^0.4 - 1)
-
 
     return(ARF)
   }
@@ -166,24 +144,18 @@ ARF <- function(area, duration, aep, region = NULL, params = NULL, neg_to_zero =
   if(area >= 10){
 
     # 1 Calculate long duration ARF for 24 hours and selected area, duration and AEP
-
     ARF.long.24 <- ARF_long(area, 1440, aep, region, params)
 
     # 2. Calculate short duration ARF for 12 hours and selected duration and AEP
-
     ARF.short.12 <- ARF_short(area, 720, aep)
 
     # 3. Interpolate for the selected duration and AEP
-
     ARF <- ARF.short.12 + (ARF.long.24 - ARF.short.12)*(duration - 720)/720
 
     return(ARF)
-
   }
 
   # Should never fall through to here
-
   stop('Error in ARF calculations')
-
 
 }

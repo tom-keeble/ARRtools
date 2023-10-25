@@ -23,8 +23,9 @@ In general, it will be enough to run the below:
 ## Upcoming additions
 
 Planned updates to the package include:
-    * The addition of a minimal-file-size raster of the national ARF regions to support parameterisation of ARF calculations.
-    * Addition of an interpolation method to extract exact AEP values given specific rainfall intensities at locations (from the design rainfall quantiles).
+
+  * The addition of a minimal-file-size raster of the national ARF regions to support parameterisation of ARF calculations.
+  * Addition of an interpolation method to extract exact AEP values given specific rainfall intensities at locations (from the design rainfall quantiles).
 
 ## Request for feedback and help
 

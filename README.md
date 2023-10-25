@@ -3,7 +3,7 @@ An R package containing tools for implementing Australian Rainfall and Runoff (A
 
 This package wraps a collection of tools developed to implement aspects of the recommended ARR methods in R.
 
-The ARR methods are drawn from select parts of the [ARR guidelines](http://book.arr.org.au.s3-website-ap-southeast-2.amazonaws.com/). The current suite of included functions are primarily focused on he methods contained in Book 2 of the Guidelines, with particular focus on Chapters 3 and 4. These chapters describe methods associated with design rainfall and Areal Reduction Factors (ARF), the latter being the original driver of this package's inception.
+The ARR methods are drawn from select parts of the [ARR guidelines](http://book.arr.org.au.s3-website-ap-southeast-2.amazonaws.com/). The current suite of included functions are primarily focused on the methods contained in Book 2 of the Guidelines, with particular focus on Chapters 3 and 4. These chapters describe methods associated with design rainfall and Areal Reduction Factors (ARF), the latter being the original driver of this package's inception.
 
 The package functions are built to specifically utilise associated design rainfall data, which is accessible via the [BOM website](http://www.bom.gov.au/water/designRainfalls/revised-ifd/). They have been created with limited dependencies, and as such should work without any additional packages beyond the base R installation (at least as of R 4.0).
 

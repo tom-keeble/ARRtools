@@ -29,7 +29,7 @@ Included with this package is a raster layer of the ARF_regions, intended as a w
 Planned updates to the package include: 
 
   * Addition of an interpolation method to extract exact AEP values given specific rainfall intensities at locations (from the design rainfall quantiles).
-  * **ADDED 2/11/23** The addition of a minimal-file-size raster of the national ARF regions to support parameterisation of ARF calculations. 
+  * **ADDED 2/11/23** <del>The addition of a minimal-file-size raster of the national ARF regions to support parameterisation of ARF calculations.</del>
 
 ## Request for feedback and help
 

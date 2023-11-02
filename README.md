@@ -20,12 +20,16 @@ In general, it will be enough to run the below:
     install_github("tom-keeble/ARRtools", branch = "master")
     
 
+## Supporting data
+
+Included with this package is a raster layer of the ARF_regions, intended as a way of easily defining which region/associated parameters to use with `ARF()` calculations. Expected use would be, for example, `terra::extract()` of the region at point(s) locations. Within the installed package directory, this file can be found at `/extdata/ARF_regions.tif`.
+
 ## Upcoming additions
 
 Planned updates to the package include: 
 
-  * The addition of a minimal-file-size raster of the national ARF regions to support parameterisation of ARF calculations. 
   * Addition of an interpolation method to extract exact AEP values given specific rainfall intensities at locations (from the design rainfall quantiles).
+  * **ADDED 2/11/23** The addition of a minimal-file-size raster of the national ARF regions to support parameterisation of ARF calculations. 
 
 ## Request for feedback and help
 

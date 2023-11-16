@@ -9,7 +9,7 @@ The package functions are built to specifically utilise associated design rainfa
 
 ## Installation
 
-Step 0: If not already, you will need to have `devtools` installed. It can be installed using the instructions [here](http://www.rstudio.com/products/rpackages/devtools/), or more simpley by un-commenting the first line of the below script. Note that for the purposes of this package, [installing `Rtools`](https://cran.r-project.org/bin/windows/Rtools/) is not necessary. 
+Step 0: If not already, you will need to have `devtools` installed. It can be installed using the instructions [here](http://www.rstudio.com/products/rpackages/devtools/), or more simply by un-commenting the first line of the below script. Note that for the purposes of this package, [installing `Rtools`](https://cran.r-project.org/bin/windows/Rtools/) is not necessary. 
 
 Step 1: Install `ARRtools` directly from my GitHub repository using `install_github("tom-keeble/ARRtools", branch = "master")`. For the purposes of this package, you may ignore the error about `Rtools` (unless you already have it installed, in which case the warning will not appear.)
 

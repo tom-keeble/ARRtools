@@ -36,4 +36,4 @@ Planned updates to the package include:
 I put this package together because it helped to solve/automate a few specific tasks that I was repeatedly implementing. If it solves your problem, or you find it useful in your own work, please let me know. If it needs to be modified to solve your problem, or if you find any errors in the package or contained functions, please either 
 
   * Open an issue on GitHub, or 
-  * Even better, fork, fix, and issue a pull request.
+  * Even better; fork, fix, and issue a pull request.
